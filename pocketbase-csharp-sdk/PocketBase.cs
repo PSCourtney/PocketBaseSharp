@@ -39,6 +39,8 @@ namespace pocketbase_csharp_sdk
         public HealthService Health { private set; get; }
         public BackupService Backup { private set; get; }
 
+        public BatchService Batch { private set; get; }
+
         private readonly string _baseUrl;
         private readonly string _language;
         private readonly HttpClient _httpClient;
@@ -59,6 +61,7 @@ namespace pocketbase_csharp_sdk
             RealTime = new RealTimeService(this);
             Health = new HealthService(this);
             Backup = new BackupService(this);
+            Batch = new BatchService(this);
         }
 
         public CollectionAuthService<T> AuthCollection<T>(string collectionName)
@@ -77,6 +80,16 @@ namespace pocketbase_csharp_sdk
             recordServices[collectionName] = newService;
             return newService;
         }
+
+        /// <summary>
+        /// Creates a new batch builder for fluent batch operations
+        /// </summary>
+        /// <returns>A new BatchBuilder instance</returns>
+        public BatchBuilder CreateBatch()
+        {
+            return Batch.CreateBatch();
+        }
+
 
         public async Task<Result> SendAsync(string path, HttpMethod method, IDictionary<string, string>? headers = null, IDictionary<string, object?>? query = null, IDictionary<string, object>? body = null, IEnumerable<IFile>? files = null, CancellationToken cancellationToken = default)
         {
