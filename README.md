@@ -12,7 +12,7 @@ Latest Update:
 - Upgraded to .NET 9 - Latest framework support
 - Dependancies updated
 - Batch Operations - batch create/update/delete operations
-
+__________________________________________________________________
 
 - [PocketBase C# SDK](#pocketbase-c-sdk)
 - [Installation](#installation)
