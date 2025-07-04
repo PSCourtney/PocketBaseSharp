@@ -1,8 +1,18 @@
-PocketBase C# SDK
+PocketBase C# SDK - NEXT edition. 
 ======================================================================
-This project is currently still under development. It is not recommended to use it in a productive environment. Things can and will change.
 
 Community-developed C# SDK (Multiplatform) for interacting with the [PocketBase API](https://pocketbase.io/docs)
+
+Acknowledgments
+Special thanks to PRCV1 for creating the original PocketBase C# SDK and laying the groundwork for this project. His excellent work made this continuation possible.
+The original project was archived and this project is to pick up support.
+
+Latest Update:
+- Forked from original project
+- Upgraded to .NET 9 - Latest framework support
+- Dependancies updated
+- Batch Operations - batch create/update/delete operations
+
 
 - [PocketBase C# SDK](#pocketbase-c-sdk)
 - [Installation](#installation)
@@ -13,10 +23,6 @@ Community-developed C# SDK (Multiplatform) for interacting with the [PocketBase 
   - [Steps](#steps)
 
 # Installation
-
-## Nuget
-
-Coming soon
 
 # Usage
 ```c#
@@ -43,12 +49,11 @@ class Restaurant : ItemBaseModel
 # Development
 
 ## Requirements
-- Visual Studio (Community Edition should work just fine)
-- .NET 6/7 SDK
+- .NET 9 SDK
 
 ## Steps
 1. Clone this repository
 ```cmd
-git clone https://github.com/PRCV1/pocketbase-csharp-sdk
+git clone https://github.com/PSCourtney/pocketbase-csharp-sdk-next
 ```
 2. Open the [pocketbase-csharp-sdk.sln](pocketbase-csharp-sdk.sln) with Visual Studio (Community Edition should work just fine)
