@@ -15,9 +15,10 @@
     }
     else
     {
-        <MudList>
+        <MudList T="string">
             @foreach (var item in _entries)
             {
+              <MudListItem>
                 <MudStack Row="true" Justify="Justify.SpaceBetween">
                     <MudCheckBox @bind-Checked="item.IsDone">
                         <div style="@(item.IsDone ? "text-decoration: line-through;" : "")">
@@ -28,6 +29,7 @@
                         <MudButton Icon="@Icons.Material.Outlined.RestoreFromTrash" Color="Color.Error" OnClick="() => Remove(item)">Remove</MudButton>
                     </MudStack>
                 </MudStack>
+                </MudListItem>
             }
         </MudList>
         <MudCardActions>

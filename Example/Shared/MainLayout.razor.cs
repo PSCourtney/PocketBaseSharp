@@ -14,7 +14,7 @@ namespace Example.Shared
         {
             if (firstRender)
             {
-                UseDarkmode = await themeProvider!.GetSystemPreference();
+                UseDarkmode = await themeProvider!.GetSystemDarkModeAsync();
                 StateHasChanged();
             }
             await base.OnAfterRenderAsync(firstRender);
