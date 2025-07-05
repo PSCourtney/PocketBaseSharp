@@ -1,6 +1,6 @@
 ﻿using Example.Models;
 using Microsoft.AspNetCore.Components;
-using pocketbase_csharp_sdk;
+using PocketBaseSharp;
 using static MudBlazor.CategoryTypes;
 
 namespace Example.Pages.SharedComponents

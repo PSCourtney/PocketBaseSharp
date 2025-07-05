@@ -1,4 +1,4 @@
-﻿using pocketbase_csharp_sdk.Models;
+﻿using PocketBaseSharp.Models;
 
 namespace Example.Models
 {

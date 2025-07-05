@@ -1,6 +1,6 @@
 ﻿using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
-using pocketbase_csharp_sdk;
+using PocketBaseSharp;
 using System.Diagnostics;
 using System.Security.Claims;
 using System.Text.Json;

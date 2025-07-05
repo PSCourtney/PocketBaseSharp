@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
-using pocketbase_csharp_sdk;
+using PocketBaseSharp;
 
 namespace Example.Pages.Login.Components
 {

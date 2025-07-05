@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\pocketbase-csharp-sdk\pocketbase-csharp-sdk.csproj" />
+    <ProjectReference Include="..\PocketBaseSharp\PocketBaseSharp.csproj" />
   </ItemGroup>
 
   <ItemGroup>
