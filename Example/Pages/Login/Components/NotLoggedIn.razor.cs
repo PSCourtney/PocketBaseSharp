@@ -20,7 +20,7 @@ namespace Example.Pages.Login.Components
         [Inject]
         public AuthenticationStateProvider AuthenticationStateProvider { get; set; } = null!;
 
-        public string? Username { get; set; }
+        public string? Email { get; set; }
         public string? Password { get; set; }
 
         protected async Task LoginAsync()
@@ -30,7 +30,7 @@ namespace Example.Pages.Login.Components
             {
                 try
                 {
-                    var result = await PocketBase.User.AuthenticateWithPasswordAsync(Username!, Password!);
+                    var result = await PocketBase.User.AuthenticateWithPasswordAsync(Email!, Password!);
                     if (result.IsSuccess)
                     {
                         Snackbar.Add("Logged in!", Severity.Success);
@@ -49,12 +49,12 @@ namespace Example.Pages.Login.Components
 
         private bool CheckInputs()
         {
-            var userEmpty = string.IsNullOrWhiteSpace(Username);
+            var userEmpty = string.IsNullOrWhiteSpace(Email);
             var passwordEmpty = string.IsNullOrWhiteSpace(Password);
 
             if (userEmpty || passwordEmpty)
             {
-                Snackbar.Add("The Username und Password fields are required.", Severity.Warning);
+                Snackbar.Add("The Email and Password fields are required.", Severity.Warning);
                 return false;
             }
             return true;
