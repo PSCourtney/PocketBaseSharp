@@ -1,59 +1,100 @@
-PocketBase C# SDK - NEXT edition. 
-======================================================================
+﻿
+# PocketBaseSharp
 
-Community-developed C# SDK (Multiplatform) for interacting with the [PocketBase API](https://pocketbase.io/docs)
+Community-developed, open-source C# SDK for [PocketBase](https://pocketbase.io/) — the lightweight, real-time backend for your apps.
 
-Acknowledgments
-Special thanks to PRCV1 for creating the original PocketBase C# SDK and laying the groundwork for this project. His excellent work made this continuation possible.
-The original project was archived and this project is to pick up support.
+**Acknowledgments**
+Special thanks to [**PRCV1** for creating the original PocketBase C# SDK](https://github.com/PRCV1/pocketbase-csharp-sdk) and laying the groundwork for this project. His excellent work made this continuation possible.
 
-Latest Update:
-- Forked from original project
-- Upgraded to .NET 9 - Latest framework support
-- Dependancies updated
-- Batch Operations - batch create/update/delete operations
-__________________________________________________________________
+## Features
 
-- [PocketBase C# SDK](#pocketbase-c-sdk)
-- [Installation](#installation)
-  - [Nuget](#nuget)
-- [Usage](#usage)
-- [Development](#development)
-  - [Requirements](#requirements)
-  - [Steps](#steps)
 
-# Installation
+-  Authentication (user/admin)
+-  Real-time subscriptions
+-  Batch operations (create/update/delete) **(NEW)**
+-  File uploads/downloads
+-  Blazor & .NET 9 compatible **(NEW)**
+-  Mudblazor demo Blazor WASM app **(NEW)**
+-  Pocketbase v0.28.4 **(NEW)**
 
-# Usage
-```c#
-//create a new Client which connects to your PocketBase-API
-var client = new PocketBase("http://127.0.0.1:8090");
 
-//authenticate as a Admin
-var admin = await client.Admin.AuthenticateWithPassword("test@test.de", "0123456789");
+## Acknowledgments
 
-//or as a User
-var user = await client.User.AuthenticateWithPassword("kekw@kekw.com", "0123456789");
+Special thanks to PRCV1 for creating the original PocketBase C# SDK and laying the groundwork for this project. His excellent work made this continuation possible. The original project was archived and this project is to pick up support.
 
-//query some data (for example, some restaurants)
-//note that each CRUD action requires a data type which inherits from the base class 'ItemBaseModel'.
-var restaurantList = await client.Records.ListAsync<Restaurant>("restaurants");
+---
 
-//like this one
-class Restaurant : ItemBaseModel
-{
-    public string? Name { get; set; }
-}
-```
+## Installation
+[PocketBase docs](https://pocketbase.io/docs/)
 
-# Development
+ - Add PocketSharpSDK to your solution
+ - Add PocketSharpSDK to your project as a reference
 
-## Requirements
-- .NET 9 SDK
+**Running the demo project:** 
+ - Set `example.csproj` as startup project
+ - Open `\PocketBase\pocketbase.exe` in terminal and run the following
+   command to start the PocketBase instance: `pocketbase.exe serve`
+ - Visit `http://127.0.0.1:8090/_/` to access the database directly
 
-## Steps
-1. Clone this repository
-```cmd
-git clone https://github.com/PSCourtney/pocketbase-csharp-sdk-next
-```
-2. Open the [pocketbase-csharp-sdk.sln](pocketbase-csharp-sdk.sln) with Visual Studio (Community Edition should work just fine)
+**Pocketbase admin login:** 
+Email: `admin@admin.com`
+PW: `demo123456`
+
+**Example blazor demo login:** 
+Email: `admin@admin.com`
+PW: `demo1234`
+
+`example/wwwroot/appsettings.json` to change PocketBase instance address.
+
+## Getting Started
+using PocketBaseSharp;
+
+Create a new client which connects to your PocketBase API
+
+    var client = new PocketBase("http://127.0.0.1:8090");
+
+Authenticate as an Admin
+
+    var admin = await client.Admin.AuthWithPasswordAsync("admin@admin.com", "demo123456");
+
+Or as a User
+
+    var user = await client.User.AuthWithPasswordAsync("admin@admin.com", "demo1234");
+
+// Query some data (for example, some ToDo items)
+// Note: Each CRUD action requires a data type which inherits from the base class 'BaseModel'.
+
+    var restaurantList = await client.Collection("todos").GetFullListAsync<todos>();
+
+
+## Development
+
+### Requirements
+- .NET 9 
+
+
+## Contributing
+
+Contributions are welcome! Please open issues or pull requests.
+
+1. Fork the repo
+2. Create your feature branch (`git checkout -b feature/YourFeature`)
+3. Commit your changes (`git commit -am 'Add new feature'`)
+4. Push to the branch (`git push origin feature/YourFeature`)
+5. Open a pull request
+
+---
+
+## License
+
+[MIT](LICENSE)
+
+---
+
+> Built with 💘 for the PocketBase community. 
+> Continued development of the original PocketBase C# SDK by PRCV1 - I can't thank you enough for your work!
+
+
+
+
+
