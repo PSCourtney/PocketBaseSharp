@@ -1,57 +1,84 @@
-﻿
-
-<MudCard>
-    <MudCardHeader>
-        <CardHeaderContent>
-            <MudText Typo="Typo.h6">To-Do List</MudText>
-        </CardHeaderContent>
-        <CardHeaderActions>
-            <MudIconButton Icon="@Icons.Material.Filled.Refresh" Color="Color.Default" OnClick="LoadTodosFromPocketbase" />
-        </CardHeaderActions>
-    </MudCardHeader>
-    <MudCardContent>
-        @if (todos is null)
-        {
-            @for (int i = 0; i < 5; i++)
+﻿<MudContainer MaxWidth="MaxWidth.Medium">
+    <MudCard>
+        <MudCardHeader>
+            <CardHeaderContent>
+                <MudText Typo="Typo.h6">To-Do List</MudText>
+            </CardHeaderContent>
+            <CardHeaderActions>
+                <MudIconButton Icon="@Icons.Material.Filled.Refresh" Color="Color.Default" OnClick="LoadTodosFromPocketbase" />
+            </CardHeaderActions>
+        </MudCardHeader>
+        <MudCardContent>
+            @if (todos is null)
             {
-                <MudSkeleton />
+                @for (int i = 0; i < 5; i++)
+                {
+                    <MudSkeleton />
+                }
             }
-        }
-        else
-        {
-            <MudTable Items="todos" Loading="_loading" Hover="true" Elevation="0">
-                <HeaderContent>
-                    <MudTh></MudTh>
-                    <MudTh>
-                        Name
-                    </MudTh>
-                    <MudTh>
-                        Created
-                    </MudTh>
-                    <MudTh>
-                        Updated
-                    </MudTh>
-                </HeaderContent>
-                <RowTemplate>
-                    <MudTd>
-                        <MudButton StartIcon="@Icons.Material.Filled.Search" Size="Size.Small" Variant="Variant.Outlined" OnClick="() => GoToDetails(context)">
-                            Show entries
-                        </MudButton>
-                    </MudTd>
-                    <MudTd DataLabel="Name">
-                        @context.Name
-                    </MudTd>
-                    <MudTd DataLabel="Created">
-                        @context.Created
-                    </MudTd>
-                    <MudTd DataLabel="Updated">
-                        @context.Updated
-                    </MudTd>
-                </RowTemplate>
-            </MudTable>
-        }
-    </MudCardContent>
-    <MudCardActions>
-        <MudButton Variant="Variant.Text" Color="Color.Success" StartIcon="@Icons.Material.Filled.Create">Create new list</MudButton>
-    </MudCardActions>
-</MudCard>
+            else
+            {
+                <MudTable Items="todos" Loading="_loading" Hover="true" Elevation="0">
+                    <HeaderContent>
+                        <MudTh></MudTh>
+                        <MudTh>
+                            Name
+                        </MudTh>
+                        <MudTh>
+                            Created
+                        </MudTh>
+                        <MudTh>
+                            Updated
+                        </MudTh>
+                        <MudTh></MudTh>
+                    </HeaderContent>
+                    <RowTemplate>
+                        <MudTd>
+                            <MudButton StartIcon="@Icons.Material.Filled.Search" Size="Size.Small" Variant="Variant.Outlined" OnClick="() => GoToDetails(context)">
+                                Show entries
+                            </MudButton>
+                        </MudTd>
+                        <MudTd DataLabel="Name">
+                            @if (editTodo != null && editTodo.Id == context.Id)
+                            {
+                                <MudTextField @bind-Value="editTodoName" Immediate="true" />
+                            }
+                            else
+                            {
+                                @context.name
+                            }
+                        </MudTd>
+                        <MudTd DataLabel="Created">
+                            @context.Created
+                        </MudTd>
+                        <MudTd DataLabel="Updated">
+                            @context.Updated
+                        </MudTd>
+                        <MudTd>
+                            @if (editTodo != null && editTodo.Id == context.Id)
+                            {
+                                <MudButton Color="Color.Primary" OnClick="SaveEditTodoAsync" Disabled="!editTodoChanged">Save</MudButton>
+                                <MudButton Color="Color.Default" OnClick="CancelEditTodo">Cancel</MudButton>
+                            }
+                            else
+                            {
+                                <MudButton Color="Color.Primary" OnClick="() => StartEditTodo(context)">Edit</MudButton>
+                            }
+                        </MudTd>
+                    </RowTemplate>
+                </MudTable>
+                @if (creatingNewTodo)
+                {
+                    <MudPaper Class="pa-2 mt-2">
+                        <MudTextField @bind-Value="newTodoName" Placeholder="List name..." Immediate="true" />
+                        <MudButton Color="Color.Primary" OnClick="SaveNewTodoAsync" Disabled="string.IsNullOrWhiteSpace(newTodoName)">Save</MudButton>
+                        <MudButton Color="Color.Default" OnClick="CancelNewTodo">Cancel</MudButton>
+                    </MudPaper>
+                }
+            }
+        </MudCardContent>
+        <MudCardActions>
+            <MudButton Variant="Variant.Text" Color="Color.Success" StartIcon="@Icons.Material.Filled.Create" OnClick="StartNewTodo" Disabled="creatingNewTodo">Create new list</MudButton>
+        </MudCardActions>
+    </MudCard>
+</MudContainer>
