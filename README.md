@@ -91,6 +91,10 @@ Contributions are welcome! Please open issues or pull requests.
 
 ---
 
+This project is currently still under development. It is not recommended to use it in a production environment. Things can and will change. This also applies to PocketBase
+
+
+
 > Built with 💘 for the PocketBase community. 
 > Continued development of the original PocketBase C# SDK by PRCV1 - I can't thank you enough for your work!
 
