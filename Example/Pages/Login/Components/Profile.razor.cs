@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
-using pocketbase_csharp_sdk;
-using pocketbase_csharp_sdk.Extensions;
-using pocketbase_csharp_sdk.Models;
+using PocketBaseSharp;
+using PocketBaseSharp.Extensions;
+using PocketBaseSharp.Models;
 
 namespace Example.Pages.Login.Components
 {

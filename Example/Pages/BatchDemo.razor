@@ -1,0 +1,113 @@
+@page "/batch-demo"
+@using Example.Models
+
+<MudContainer MaxWidth="MaxWidth.Medium">
+    <MudCard>
+        <MudCardHeader>
+            <CardHeaderContent>
+                <MudText Typo="Typo.h4">Batch Processing Demo</MudText>
+                <MudText Typo="Typo.body1">This page demonstrates batch operations using Todo and Entry models</MudText>
+            </CardHeaderContent>
+        </MudCardHeader>
+        
+        <MudCardContent>
+            <MudStack Spacing="3">
+                <MudTextField @bind-Value="todoName" 
+                             Label="Todo Name" 
+                             Placeholder="Enter todo name" 
+                             Variant="Variant.Outlined" />
+                
+                <MudText Typo="Typo.h6">Entries:</MudText>
+                
+                @for (int i = 0; i < entryNames.Count; i++)
+                {
+                    int index = i; // Capture for closure
+                    <MudStack Row="true" Spacing="2" Class="align-center">
+                        <MudTextField @bind-Value="entryNames[index]" 
+                                     Label="@($"Entry {index + 1}")" 
+                                     Placeholder="Enter entry name" 
+                                     Variant="Variant.Outlined" />
+                        <MudIconButton Icon="@Icons.Material.Filled.Delete" 
+                                      Color="Color.Error" 
+                                      OnClick="() => RemoveEntry(index)" />
+                    </MudStack>
+                }
+                
+                <MudButton StartIcon="@Icons.Material.Filled.Add" 
+                          Color="Color.Primary" 
+                          Variant="Variant.Outlined"
+                          OnClick="AddEntry">
+                    Add Entry
+                </MudButton>
+            </MudStack>
+        </MudCardContent>
+        
+        <MudCardActions>
+            <MudStack Row="true" Spacing="2">
+                <MudButton StartIcon="@Icons.Material.Filled.BatchPrediction" 
+                          Color="Color.Success" 
+                          Variant="Variant.Filled"
+                          OnClick="ExecuteBatchSimple"
+                          Disabled="isProcessing || string.IsNullOrWhiteSpace(todoName)">
+                    @if (isProcessing)
+                    {
+                        <MudProgressCircular Size="Size.Small" Indeterminate="true" />
+                        <MudText Class="ms-2">Processing...</MudText>
+                    }
+                    else
+                    {
+                        <span>Simple Batch (Todos Only)</span>
+                    }
+                </MudButton>
+                
+                <MudButton StartIcon="@Icons.Material.Filled.BatchPrediction" 
+                          Color="Color.Primary" 
+                          Variant="Variant.Filled"
+                          OnClick="ExecuteBatchCorrectly"
+                          Disabled="isProcessing || string.IsNullOrWhiteSpace(todoName)">
+                    @if (isProcessing)
+                    {
+                        <MudProgressCircular Size="Size.Small" Indeterminate="true" />
+                        <MudText Class="ms-2">Processing...</MudText>
+                    }
+                    else
+                    {
+                        <span>Complete Flow (Todo + Entries)</span>
+                    }
+                </MudButton>
+            </MudStack>
+        </MudCardActions>
+        
+        @if (!string.IsNullOrEmpty(resultMessage))
+        {
+            <MudCardContent>
+                <MudAlert Severity="@(isSuccess ? Severity.Success : Severity.Error)">
+                    @resultMessage
+                </MudAlert>
+            </MudCardContent>
+        }
+        
+        @if (batchResults?.Any() == true)
+        {
+            <MudCardContent>
+                <MudText Typo="Typo.h6">Batch Results:</MudText>
+                <MudList T="string">
+                    @foreach (var result in batchResults)
+                    {
+                        <MudListItem T="string">
+                            <MudStack Row="true" Spacing="2" Class="align-center">
+                                <MudIcon Icon="@(result.Status == 200 || result.Status == 201 ? Icons.Material.Filled.CheckCircle : Icons.Material.Filled.Error)" 
+                                        Color="@(result.Status == 200 || result.Status == 201 ? Color.Success : Color.Error)" />
+                                <MudText>Status: @result.Status</MudText>
+                                @if (result.Body?.ContainsKey("name") == true)
+                                {
+                                    <MudText>- Created: @result.Body["name"]</MudText>
+                                }
+                            </MudStack>
+                        </MudListItem>
+                    }
+                </MudList>
+            </MudCardContent>
+        }
+    </MudCard>
+</MudContainer>

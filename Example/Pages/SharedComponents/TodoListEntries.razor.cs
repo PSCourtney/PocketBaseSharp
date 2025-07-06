@@ -1,6 +1,6 @@
 ﻿using Example.Models;
 using Microsoft.AspNetCore.Components;
-using pocketbase_csharp_sdk;
+using PocketBaseSharp;
 using static MudBlazor.CategoryTypes;
 
 namespace Example.Pages.SharedComponents
@@ -13,7 +13,9 @@ namespace Example.Pages.SharedComponents
         [Inject]
         public PocketBase PocketBase { get; set; } = null!;
 
-        private List<EntryModel>? _entries;
+        private List<Entry>? _entries;
+
+        bool isediting = false;
 
         protected override async Task OnParametersSetAsync()
         {
@@ -21,8 +23,7 @@ namespace Example.Pages.SharedComponents
             await base.OnParametersSetAsync();
         }
 
-        
-        protected async Task LoadEntriesAsync()
+        private async Task LoadEntriesAsync()
         {
             if (string.IsNullOrWhiteSpace(Id))
             {
@@ -30,42 +31,103 @@ namespace Example.Pages.SharedComponents
             }
 
             var result =
-                await PocketBase.Collection("todos_entries").GetFullListAsync<EntryModel>(filter: $"todo_id.id='{Id}'");
+                await PocketBase.Collection("entry").GetFullListAsync<Entry>(filter: $"todo_id='{Id}'");
             if (result.IsSuccess)
             {
                 _entries = result.Value.ToList();
             }
         }
 
-        protected void AddNewEntry()
+        private async Task AddNewEntryAsync()
         {
-            if (_entries is null)
+            if (_entries is null || string.IsNullOrWhiteSpace(Id))
             {
                 return;
             }
-            _entries.Add(new EntryModel());
+
+            var newEntry = new Entry
+            {
+                name = "New Entry",
+                todo_id = Id,
+                is_done = false,
+            };
+
+            _entries.Add(newEntry);
+            StateHasChanged();
         }
 
-        protected void Remove(EntryModel item)
+        private void ToggleEdit()
+        {
+            isediting = !isediting;
+        }
+
+        private async Task Remove(Entry item)
         {
             if (_entries is null)
             {
                 return;
             }
+
+            if (!string.IsNullOrEmpty(item.Id))
+            {
+                // Use a lower-level API call to delete the entry
+                var result = await PocketBase.SendAsync<object>(
+                    $"/api/collections/entry/records/{item.Id}",
+                    HttpMethod.Delete
+                );
+
+                if (!result.IsSuccess)
+                {
+                    // Handle error (e.g., log or show a message)
+                    return;
+                }
+            }
+
             _entries.Remove(item);
+            StateHasChanged();
         }
 
-        protected async Task SaveAsync()
+        private async Task SaveAsync()
         {
             if (_entries is null)
             {
                 return;
             }
+
             foreach (var item in _entries)
             {
-                await PocketBase.Collection("todos_entries").UpdateAsync<EntryModel>(item);
+                if (string.IsNullOrEmpty(item.Id))
+                {
+                    item.todo_id = Id;
+                    var result = await PocketBase.Collection("entry").CreateAsync<Entry>(item);
+                    if (result.IsSuccess)
+                    {
+                        item.Id = result.Value.Id; // Update the item with the new ID
+                        isediting = false;
+                    }
+                    else
+                    {
+                        // Handle error (e.g., log or show a message)
+                    }
+                }
+                else
+                {
+                    // Update existing entry
+                    var result = await PocketBase.Collection("entry").UpdateAsync<Entry>(item);
+                    if (result.IsSuccess)
+                    {
+                        isediting = false;
+                    }
+                }
             }
+
+            StateHasChanged();
         }
 
+        private void NavigateBack()
+        {
+            // Use NavigationManager to go back to the list page
+            NavigationManager.NavigateTo("/");
+        }
     }
 }
