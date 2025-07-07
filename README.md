@@ -64,8 +64,8 @@ Or as a User
 
     var user = await client.User.AuthWithPasswordAsync("admin@admin.com", "demo1234");
 
-// Query some data (for example, some ToDo items)
-// Note: Each CRUD action requires a data type which inherits from the base class 'BaseModel'.
+Query some data (for example, some ToDo items)
+Note: Each CRUD action requires a data type which inherits from the base class 'BaseModel'.
 
     var restaurantList = await client.Collection("todos").GetFullListAsync<todos>();
 
