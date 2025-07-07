@@ -1,12 +1,15 @@
-﻿
-# PocketBaseSharp
+
+﻿![PBSharp](https://i.imgur.com/VqOWW7n.png)
+## **PocketBaseSharp**
 
 Community-developed, open-source C# SDK for [PocketBase](https://pocketbase.io/) — the lightweight, real-time backend for your apps.
 
 **Acknowledgments**
-Special thanks to [**PRCV1** for creating the original PocketBase C# SDK](https://github.com/PRCV1/pocketbase-csharp-sdk) and laying the groundwork for this project. His excellent work made this continuation possible.
+Special thanks to [**PRCV1** for creating the original PocketBase C# SDK](https://github.com/PRCV1/pocketbase-csharp-sdk) and laying the groundwork for this project. His excellent work made this continuation possible. 
 
-## Features
+This fork exists with his approval. 
+
+### Features
 
 
 -  Authentication (user/admin)
@@ -22,7 +25,7 @@ Special thanks to [**PRCV1** for creating the original PocketBase C# SDK](https:
 
 Special thanks to PRCV1 for creating the original PocketBase C# SDK and laying the groundwork for this project. His excellent work made this continuation possible. The original project was archived and this project is to pick up support.
 
----
+
 
 ## Installation
 [PocketBase docs](https://pocketbase.io/docs/)
