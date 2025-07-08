@@ -1,7 +1,13 @@
 
-﻿![PBSharp](https://i.imgur.com/TXKKai6.png)
-## **PocketBaseSharp**
+<div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+  <img src="https://i.imgur.com/ZVBiUo5.png" alt="PBSharp" width="150"/>
+  <img src="https://img.shields.io/badge/pocketbase-%23b8dbe4.svg?style=for-the-badge&logo=Pocketbase&logoColor=black" alt="PocketBase"/>
+  <img src="https://img.shields.io/badge/built%20with-Blazor-purple?style=for-the-badge&logo=dotnet&logoColor=white" alt="Blazor"/>
+  <img src="https://img.shields.io/badge/MudBlazor-%231e88e5.svg?style=for-the-badge&logo=mudblazor&logoColor=white" alt="MudBlazor"/>
+</div>
 
+
+## **PocketBaseSharp**
 Community-developed, open-source C# SDK for [PocketBase](https://pocketbase.io/) — the lightweight, real-time backend for your apps.
 
 **Acknowledgments**
@@ -28,10 +34,13 @@ Special thanks to PRCV1 for creating the original PocketBase C# SDK and laying t
 
 
 ## Installation
-[PocketBase docs](https://pocketbase.io/docs/)
 
- - Add PocketSharpSDK to your solution
- - Add PocketSharpSDK to your project as a reference
+**Structure:**
+
+ - Example (Blazor demo site)
+ - PocketBaseSharp (The SDK) 
+ - PocketBaseSharp.Tests
+ - PocketBase (Database & windows binary)
 
 **Running the demo project:** 
  - Set `example.csproj` as startup project
@@ -48,6 +57,12 @@ Email: `admin@admin.com`
 PW: `demo1234`
 
 `example/wwwroot/appsettings.json` to change PocketBase instance address.
+
+**Using the SDK:**
+
+ - Add PocketSharpSDK to your solution
+ - Add PocketSharpSDK to your project as a reference
+ - *Nuget package coming in the future*
 
 ## Getting Started
 using PocketBaseSharp;
@@ -99,7 +114,7 @@ This project is currently still under development. It is not recommended to use 
 
 
 > Built with 💘 for the PocketBase community. 
-> Continued development of the original PocketBase C# SDK by PRCV1 - I can't thank you enough for your work!
+> Continued development of the original PocketBase C# SDK by PRCV1 - I can't thank you enough for your work! This project is tested with BrowserStack.
 
 
 
