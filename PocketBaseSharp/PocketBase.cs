@@ -12,6 +12,10 @@ using PocketBaseSharp.Errors;
 
 namespace PocketBaseSharp
 {
+    /// <summary>
+    /// Main client class for interacting with PocketBase backend services.
+    /// Provides access to all PocketBase APIs including authentication, collections, real-time subscriptions, and more.
+    /// </summary>
     public class PocketBase
     {
         #region Private Fields
@@ -20,31 +24,93 @@ namespace PocketBaseSharp
         #endregion
 
         #region Events
+        /// <summary>
+        /// Event handler delegate for intercepting HTTP requests before they are sent.
+        /// </summary>
+        /// <param name="sender">The PocketBase instance</param>
+        /// <param name="e">Request event arguments containing the request details</param>
+        /// <returns>The potentially modified HTTP request message</returns>
         public delegate HttpRequestMessage BeforeSendEventHandler(object sender, RequestEventArgs e);
+        
+        /// <summary>
+        /// Event fired before each HTTP request is sent, allowing for request modification.
+        /// </summary>
         public event BeforeSendEventHandler? BeforeSend;
 
+        /// <summary>
+        /// Event handler delegate for processing HTTP responses after they are received.
+        /// </summary>
+        /// <param name="sender">The PocketBase instance</param>
+        /// <param name="e">Response event arguments containing the response details</param>
         public delegate void AfterSendEventHandler(object sender, ResponseEventArgs e);
+        
+        /// <summary>
+        /// Event fired after each HTTP response is received, allowing for response processing.
+        /// </summary>
         public event AfterSendEventHandler? AfterSend;
         #endregion
 
-
+        /// <summary>
+        /// Gets the authentication store for managing user authentication state.
+        /// </summary>
         public AuthStore AuthStore { private set; get; }
+        
+        /// <summary>
+        /// Gets the admin service for managing administrative operations.
+        /// </summary>
         public AdminService Admin { private set; get; }
+        
+        /// <summary>
+        /// Gets the user service for managing user operations.
+        /// </summary>
         public UserService User { private set; get; }
+        
+        /// <summary>
+        /// Gets the log service for accessing request logs and statistics.
+        /// </summary>
         public LogService Log { private set; get; }
+        
+        /// <summary>
+        /// Gets the settings service for managing application settings.
+        /// </summary>
         public SettingsService Settings { private set; get; }
+        
+        /// <summary>
+        /// Gets the collection service for managing database collections.
+        /// </summary>
         public CollectionService Collections { private set; get; }
-        //public RecordService Records { private set; get; }
+        
+        /// <summary>
+        /// Gets the real-time service for managing WebSocket connections and subscriptions.
+        /// </summary>
         public RealTimeService RealTime { private set; get; }
+        
+        /// <summary>
+        /// Gets the health service for checking server health status.
+        /// </summary>
         public HealthService Health { private set; get; }
+        
+        /// <summary>
+        /// Gets the backup service for managing database backups.
+        /// </summary>
         public BackupService Backup { private set; get; }
 
+        /// <summary>
+        /// Gets the batch service for performing multiple operations in a single request.
+        /// </summary>
         public BatchService Batch { private set; get; }
 
         private readonly string _baseUrl;
         private readonly string _language;
         private readonly HttpClient _httpClient;
 
+        /// <summary>
+        /// Initializes a new instance of the PocketBase client.
+        /// </summary>
+        /// <param name="baseUrl">The base URL of the PocketBase server (e.g., "http://localhost:8090")</param>
+        /// <param name="authStore">Optional authentication store for managing auth state. If null, a new AuthStore will be created</param>
+        /// <param name="language">The preferred language for API responses (default: "en-US")</param>
+        /// <param name="httpClient">Optional HttpClient instance. If null, a new HttpClient will be created</param>
         public PocketBase(string baseUrl, AuthStore? authStore = null, string language = "en-US", HttpClient? httpClient = null)
         {
             this._baseUrl = baseUrl;
@@ -64,12 +130,24 @@ namespace PocketBaseSharp
             Batch = new BatchService(this);
         }
 
+        /// <summary>
+        /// Creates an authentication service for a specific collection that stores auth records.
+        /// </summary>
+        /// <typeparam name="T">The type of the auth model, must implement IBaseAuthModel</typeparam>
+        /// <param name="collectionName">The name of the collection containing auth records</param>
+        /// <returns>A CollectionAuthService instance for the specified collection</returns>
         public CollectionAuthService<T> AuthCollection<T>(string collectionName)
             where T : IBaseAuthModel
         {
             return new CollectionAuthService<T>(this, collectionName);
         }
 
+        /// <summary>
+        /// Gets or creates a record service for the specified collection.
+        /// Services are cached and reused for the same collection name.
+        /// </summary>
+        /// <param name="collectionName">The name of the collection</param>
+        /// <returns>A RecordService instance for the specified collection</returns>
         public RecordService Collection(string collectionName)
         {
             if (recordServices.ContainsKey(collectionName))
@@ -90,7 +168,18 @@ namespace PocketBaseSharp
             return Batch.CreateBatch();
         }
 
-
+        
+        /// <summary>
+        /// Sends an asynchronous HTTP request to the PocketBase API.
+        /// </summary>
+        /// <param name="path">The API endpoint path (without base URL)</param>
+        /// <param name="method">The HTTP method to use for the request</param>
+        /// <param name="headers">Optional HTTP headers to include with the request</param>
+        /// <param name="query">Optional query parameters to append to the URL</param>
+        /// <param name="body">Optional request body data</param>
+        /// <param name="files">Optional files to upload with the request</param>
+        /// <param name="cancellationToken">Cancellation token to cancel the operation</param>
+        /// <returns>A Result indicating success or failure of the operation</returns>
         public async Task<Result> SendAsync(string path, HttpMethod method, IDictionary<string, string>? headers = null, IDictionary<string, object?>? query = null, IDictionary<string, object>? body = null, IEnumerable<IFile>? files = null, CancellationToken cancellationToken = default)
         {
             headers ??= new Dictionary<string, string>();
@@ -140,6 +229,17 @@ namespace PocketBaseSharp
             }
         }
 
+        /// <summary>
+        /// Sends a synchronous HTTP request to the PocketBase API.
+        /// </summary>
+        /// <param name="path">The API endpoint path (without base URL)</param>
+        /// <param name="method">The HTTP method to use for the request</param>
+        /// <param name="headers">Optional HTTP headers to include with the request</param>
+        /// <param name="query">Optional query parameters to append to the URL</param>
+        /// <param name="body">Optional request body data</param>
+        /// <param name="files">Optional files to upload with the request</param>
+        /// <param name="cancellationToken">Cancellation token to cancel the operation</param>
+        /// <returns>A Result indicating success or failure of the operation</returns>
         public Result Send(string path, HttpMethod method, IDictionary<string, string>? headers = null, IDictionary<string, object?>? query = null, IDictionary<string, object>? body = null, IEnumerable<IFile>? files = null, CancellationToken cancellationToken = default)
         {
             //RETURN RESULT
@@ -187,6 +287,18 @@ namespace PocketBaseSharp
             }
         }
 
+        /// <summary>
+        /// Sends an asynchronous HTTP request to the PocketBase API and deserializes the response to the specified type.
+        /// </summary>
+        /// <typeparam name="T">The type to deserialize the response to</typeparam>
+        /// <param name="path">The API endpoint path (without base URL)</param>
+        /// <param name="method">The HTTP method to use for the request</param>
+        /// <param name="headers">Optional HTTP headers to include with the request</param>
+        /// <param name="query">Optional query parameters to append to the URL</param>
+        /// <param name="body">Optional request body data</param>
+        /// <param name="files">Optional files to upload with the request</param>
+        /// <param name="cancellationToken">Cancellation token to cancel the operation</param>
+        /// <returns>A Result containing the deserialized response of type T or an error</returns>
         public async Task<Result<T>> SendAsync<T>(string path, HttpMethod method, IDictionary<string, string>? headers = null, IDictionary<string, object?>? query = null, IDictionary<string, object>? body = null, IEnumerable<IFile>? files = null, CancellationToken cancellationToken = default)
         {
             headers ??= new Dictionary<string, string>();
@@ -238,6 +350,18 @@ namespace PocketBaseSharp
             }
         }
         
+        /// <summary>
+        /// Sends a synchronous HTTP request to the PocketBase API and deserializes the response to the specified type.
+        /// </summary>
+        /// <typeparam name="T">The type to deserialize the response to</typeparam>
+        /// <param name="path">The API endpoint path (without base URL)</param>
+        /// <param name="method">The HTTP method to use for the request</param>
+        /// <param name="headers">Optional HTTP headers to include with the request</param>
+        /// <param name="query">Optional query parameters to append to the URL</param>
+        /// <param name="body">Optional request body data</param>
+        /// <param name="files">Optional files to upload with the request</param>
+        /// <param name="cancellationToken">Cancellation token to cancel the operation</param>
+        /// <returns>A Result containing the deserialized response of type T or an error</returns>
         public Result<T> Send<T>(string path, HttpMethod method, IDictionary<string, string>? headers = null, IDictionary<string, object?>? query = null, IDictionary<string, object>? body = null, IEnumerable<IFile>? files = null, CancellationToken cancellationToken = default)
         {
             headers ??= new Dictionary<string, string>();
@@ -334,6 +458,12 @@ namespace PocketBaseSharp
             return request;
         }
 
+        /// <summary>
+        /// Builds a complete URL for the specified API path with optional query parameters.
+        /// </summary>
+        /// <param name="path">The API endpoint path to append to the base URL</param>
+        /// <param name="queryParameters">Optional query parameters to append to the URL</param>
+        /// <returns>A complete URI for the API request</returns>
         public Uri BuildUrl(string path, IDictionary<string, object?>? queryParameters = null)
         {
             var url = _baseUrl + (_baseUrl.EndsWith("/") ? "" : "/");
