@@ -7,12 +7,28 @@ using PocketBaseSharp.Services.Base;
 
 namespace PocketBaseSharp.Services
 {
+    /// <summary>
+    /// Service for managing authentication operations on collections that store auth records.
+    /// Provides a simplified interface for the most common auth record type.
+    /// </summary>
+    /// <typeparam name="T">The type of the auth model, must implement IBaseAuthModel</typeparam>
     public class CollectionAuthService<T> : CollectionAuthService<RecordAuthModel<T>, T>
         where T : IBaseAuthModel
     {
+        /// <summary>
+        /// Initializes a new instance of the CollectionAuthService class.
+        /// </summary>
+        /// <param name="client">The PocketBase client instance</param>
+        /// <param name="collectionName">The name of the authentication collection</param>
         public CollectionAuthService(PocketBase client, string collectionName) : base(client, collectionName) { }
     }
 
+    /// <summary>
+    /// Service for managing authentication operations on collections that store auth records.
+    /// Provides full authentication functionality including login, registration, and user management.
+    /// </summary>
+    /// <typeparam name="R">The record type that contains the auth model</typeparam>
+    /// <typeparam name="T">The type of the auth model, must implement IBaseAuthModel</typeparam>
     public class CollectionAuthService<R, T> : BaseAuthService<R>
         where R : RecordAuthModel<T>
         where T : IBaseAuthModel
@@ -22,6 +38,11 @@ namespace PocketBaseSharp.Services
         private readonly PocketBase _client;
         private readonly string _collectionName;
         
+        /// <summary>
+        /// Initializes a new instance of the CollectionAuthService class.
+        /// </summary>
+        /// <param name="client">The PocketBase client instance</param>
+        /// <param name="collectionName">The name of the authentication collection</param>
         public CollectionAuthService(PocketBase client, string collectionName) : base(client)
         {
             this._client = client;

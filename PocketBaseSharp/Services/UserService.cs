@@ -7,6 +7,10 @@ using PocketBaseSharp.Services.Base;
 
 namespace PocketBaseSharp.Services
 {
+    /// <summary>
+    /// Service for managing user accounts and authentication in the users collection.
+    /// Provides CRUD operations and authentication functionality for user records.
+    /// </summary>
     public class UserService : BaseCrudService<UserModel>
     {
         protected override string BasePath(string? url = null) => "/api/collections/users/records";
@@ -14,6 +18,10 @@ namespace PocketBaseSharp.Services
         private readonly PocketBase _client;
         private readonly CollectionAuthService<UserAuthModel, UserModel> _authService;
 
+        /// <summary>
+        /// Initializes a new instance of the UserService class.
+        /// </summary>
+        /// <param name="client">The PocketBase client instance</param>
         public UserService(PocketBase client) : base(client)
         {
             this._client = client;

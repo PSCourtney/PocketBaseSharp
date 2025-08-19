@@ -5,6 +5,10 @@ using PocketBaseSharp.Services.Base;
 
 namespace PocketBaseSharp.Services
 {
+    /// <summary>
+    /// Service for accessing request logs and statistics from the PocketBase server.
+    /// Provides functionality to retrieve individual log entries and aggregate statistics.
+    /// </summary>
     public class LogService : BaseService
     {
 
@@ -12,6 +16,10 @@ namespace PocketBaseSharp.Services
 
         private readonly PocketBase _client;
 
+        /// <summary>
+        /// Initializes a new instance of the LogService class.
+        /// </summary>
+        /// <param name="client">The PocketBase client instance</param>
         public LogService(PocketBase client)
         {
             this._client = client;
