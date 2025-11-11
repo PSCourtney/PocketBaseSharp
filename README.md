@@ -1,4 +1,3 @@
-
 <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
   <img src="https://i.imgur.com/ZVBiUo5.png" alt="PBSharp" width="150"/>
   <img src="https://img.shields.io/badge/pocketbase-%23b8dbe4.svg?style=for-the-badge&logo=Pocketbase&logoColor=black" alt="PocketBase"/>
@@ -19,7 +18,7 @@ Community-developed, open-source C# SDK for [PocketBase](https://pocketbase.io/)
 -  Real-time subscriptions
 -  Batch operations (create/update/delete) **(NEW)**
 -  File uploads/downloads
--  Blazor & .NET 9 compatible **(NEW)**
+-  Blazor & .NET 10 compatible **(NEW)**
 -  Mudblazor demo Blazor WASM app **(NEW)**
 -  Pocketbase v0.28.4 **(NEW)**
 
@@ -85,7 +84,7 @@ Note: Each CRUD action requires a data type which inherits from the base class '
 ## Development
 
 ### Requirements
-- .NET 9 
+- .NET 10 
 
 
 ## Contributing
