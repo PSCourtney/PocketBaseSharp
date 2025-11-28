@@ -3,15 +3,33 @@ using FluentResults;
 
 namespace PocketBaseSharp.Services.Base
 {
+    /// <summary>
+    /// Abstract base class for services that provide CRUD (Create, Read, Update, Delete) operations.
+    /// Provides standard implementation for common database operations on typed models.
+    /// </summary>
+    /// <typeparam name="T">The type of model this service manages</typeparam>
     public abstract class BaseCrudService<T> : BaseService
     {
         private readonly PocketBase _client;
 
+        /// <summary>
+        /// Initializes a new instance of the BaseCrudService class.
+        /// </summary>
+        /// <param name="client">The PocketBase client instance</param>
         protected BaseCrudService(PocketBase client)
         {
             this._client = client;
         }
         
+        /// <summary>
+        /// Synchronously retrieves a paginated list of records.
+        /// </summary>
+        /// <param name="page">The page number to retrieve (default: 1)</param>
+        /// <param name="perPage">The number of records per page (default: 30)</param>
+        /// <param name="filter">Optional filter expression to apply</param>
+        /// <param name="sort">Optional sort expression to apply</param>
+        /// <param name="cancellationToken">Cancellation token to cancel the operation</param>
+        /// <returns>A Result containing the paginated collection or an error</returns>
         public virtual Result<PagedCollectionModel<T>> List(int page = 1, int perPage = 30, string? filter = null, string? sort = null, CancellationToken cancellationToken = default)
         {
             var path = BasePath();
@@ -26,6 +44,15 @@ namespace PocketBaseSharp.Services.Base
             return _client.Send<PagedCollectionModel<T>>(path, HttpMethod.Get, query: query, cancellationToken: cancellationToken);
         }
 
+        /// <summary>
+        /// Asynchronously retrieves a paginated list of records.
+        /// </summary>
+        /// <param name="page">The page number to retrieve (default: 1)</param>
+        /// <param name="perPage">The number of records per page (default: 30)</param>
+        /// <param name="filter">Optional filter expression to apply</param>
+        /// <param name="sort">Optional sort expression to apply</param>
+        /// <param name="cancellationToken">Cancellation token to cancel the operation</param>
+        /// <returns>A Result containing the paginated collection or an error</returns>
         public virtual Task<Result<PagedCollectionModel<T>>> ListAsync(int page = 1, int perPage = 30, string? filter = null, string? sort = null, CancellationToken cancellationToken = default)
         {
             var path = BasePath();
