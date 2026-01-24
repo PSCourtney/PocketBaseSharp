@@ -56,6 +56,86 @@ namespace PocketBaseSharp.Services
             return SetAndReturn(result);
         }
 
+        /// <summary>
+        /// Requests a one-time password (OTP) to be sent to the specified email address.
+        /// </summary>
+        /// <param name="email">The email address to send the OTP to.</param>
+        /// <param name="body">Optional additional body parameters.</param>
+        /// <param name="query">Optional query parameters.</param>
+        /// <param name="headers">Optional headers.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>Result containing the OTP request response with otpId.</returns>
+        public async Task<Result<OtpRequestResponse>> RequestOtpAsync(string email, IDictionary<string, object>? body = null, IDictionary<string, object?>? query = null, IDictionary<string, string>? headers = null, CancellationToken cancellationToken = default)
+        {
+            body ??= new Dictionary<string, object>();
+            body.Add("email", email);
+
+            var url = $"{BasePath()}/request-otp";
+            return await _client.SendAsync<OtpRequestResponse>(url, HttpMethod.Post, headers: headers, query: query, body: body, cancellationToken: cancellationToken);
+        }
+
+        /// <summary>
+        /// Requests a one-time password (OTP) to be sent to the specified email address (synchronous).
+        /// </summary>
+        /// <param name="email">The email address to send the OTP to.</param>
+        /// <param name="body">Optional additional body parameters.</param>
+        /// <param name="query">Optional query parameters.</param>
+        /// <param name="headers">Optional headers.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>Result containing the OTP request response with otpId.</returns>
+        public Result<OtpRequestResponse> RequestOtp(string email, IDictionary<string, object>? body = null, IDictionary<string, object?>? query = null, IDictionary<string, string>? headers = null, CancellationToken cancellationToken = default)
+        {
+            body ??= new Dictionary<string, object>();
+            body.Add("email", email);
+
+            var url = $"{BasePath()}/request-otp";
+            return _client.Send<OtpRequestResponse>(url, HttpMethod.Post, headers: headers, query: query, body: body, cancellationToken: cancellationToken);
+        }
+
+        /// <summary>
+        /// Authenticates a user using a one-time password (OTP).
+        /// </summary>
+        /// <param name="otpId">The OTP ID received from RequestOtpAsync.</param>
+        /// <param name="password">The OTP code received via email.</param>
+        /// <param name="body">Optional additional body parameters.</param>
+        /// <param name="query">Optional query parameters.</param>
+        /// <param name="headers">Optional headers.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>Result containing the authenticated user information.</returns>
+        public async Task<Result<R>> AuthWithOtpAsync(string otpId, string password, IDictionary<string, object>? body = null, IDictionary<string, object?>? query = null, IDictionary<string, string>? headers = null, CancellationToken cancellationToken = default)
+        {
+            body ??= new Dictionary<string, object>();
+            body.Add("otpId", otpId);
+            body.Add("password", password);
+
+            var url = $"{BasePath()}/auth-with-otp";
+            var result = await _client.SendAsync<R>(url, HttpMethod.Post, headers: headers, query: query, body: body, cancellationToken: cancellationToken);
+
+            return SetAndReturn(result);
+        }
+
+        /// <summary>
+        /// Authenticates a user using a one-time password (OTP) (synchronous).
+        /// </summary>
+        /// <param name="otpId">The OTP ID received from RequestOtp.</param>
+        /// <param name="password">The OTP code received via email.</param>
+        /// <param name="body">Optional additional body parameters.</param>
+        /// <param name="query">Optional query parameters.</param>
+        /// <param name="headers">Optional headers.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>Result containing the authenticated user information.</returns>
+        public Result<R> AuthWithOtp(string otpId, string password, IDictionary<string, object>? body = null, IDictionary<string, object?>? query = null, IDictionary<string, string>? headers = null, CancellationToken cancellationToken = default)
+        {
+            body ??= new Dictionary<string, object>();
+            body.Add("otpId", otpId);
+            body.Add("password", password);
+
+            var url = $"{BasePath()}/auth-with-otp";
+            var result = _client.Send<R>(url, HttpMethod.Post, headers: headers, query: query, body: body, cancellationToken: cancellationToken);
+
+            return SetAndReturn(result);
+        }
+
         public Task<Result> RequestVerificationAsync(string email, IDictionary<string, object>? body = null, IDictionary<string, object?>? query = null, IDictionary<string, string>? headers = null, CancellationToken cancellationToken = default)
         {
             body ??= new Dictionary<string, object>();

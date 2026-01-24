@@ -1,0 +1,33 @@
+<MudCard>
+    <MudCardHeader>
+        <CardHeaderContent>
+            <MudText Typo="Typo.h6">Request OTP</MudText>
+            <MudText Typo="Typo.body2">We'll send a verification code to your email</MudText>
+        </CardHeaderContent>
+    </MudCardHeader>
+    <MudCardContent>
+        <MudTextField @bind-Value="Email" 
+                      Label="Email" 
+                      Variant="Variant.Outlined" 
+                      InputType="InputType.Email"
+                      HelperText="Enter your registered email address"
+                      Disabled="@_isLoading" />
+    </MudCardContent>
+    <MudCardActions>
+        <MudButton EndIcon="@Icons.Material.Filled.Email" 
+                   Color="Color.Primary" 
+                   OnClick="RequestOtpAsync"
+                   Disabled="@_isLoading"
+                   Variant="Variant.Filled">
+            @if (_isLoading)
+            {
+                <MudProgressCircular Size="Size.Small" Indeterminate="true" Class="mr-2" />
+                <span>Sending...</span>
+            }
+            else
+            {
+                <span>Send OTP</span>
+            }
+        </MudButton>
+    </MudCardActions>
+</MudCard>

@@ -1,0 +1,41 @@
+@page "/login/otp"
+@using Example.Pages.Login.Components
+
+<PageTitle>Login with OTP</PageTitle>
+
+<MudContainer MaxWidth="MaxWidth.Small" Class="mt-8">
+    <MudPaper Elevation="3" Class="pa-6">
+        <MudText Typo="Typo.h4" Align="Align.Center" Class="mb-4">Login with OTP</MudText>
+        <MudText Typo="Typo.body2" Align="Align.Center" Class="mb-6">
+            Enter your email to receive a one-time password
+        </MudText>
+
+        @if (!OtpRequested)
+        {
+            <RequestOtpForm OnOtpRequested="HandleOtpRequested" />
+        }
+        else
+        {
+            <VerifyOtpForm OtpId="@_otpId" Email="@_email" />
+        }
+
+        <MudDivider Class="my-4" />
+        <MudText Typo="Typo.body2" Align="Align.Center">
+            <MudLink Href="/login">Back to regular login</MudLink>
+        </MudText>
+    </MudPaper>
+</MudContainer>
+
+@code {
+    private bool OtpRequested { get; set; }
+    private string? _otpId;
+    private string? _email;
+
+    private void HandleOtpRequested(string otpId, string email)
+    {
+        _otpId = otpId;
+        _email = email;
+        OtpRequested = true;
+        StateHasChanged();
+    }
+}

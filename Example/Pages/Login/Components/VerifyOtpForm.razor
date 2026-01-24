@@ -1,0 +1,40 @@
+<MudCard>
+    <MudCardHeader>
+        <CardHeaderContent>
+            <MudText Typo="Typo.h6">Verify OTP</MudText>
+            <MudText Typo="Typo.body2">
+                Enter the code sent to <strong>@Email</strong>
+            </MudText>
+        </CardHeaderContent>
+    </MudCardHeader>
+    <MudCardContent>
+        <MudAlert Severity="Severity.Info" Class="mb-4">
+            Check your email for a verification code. It may take a minute to arrive.
+        </MudAlert>
+        <MudTextField @bind-Value="OtpCode" 
+                      Label="OTP Code" 
+                      Variant="Variant.Outlined" 
+                      InputType="InputType.Text"
+                      HelperText="Enter the code from your email"
+                      Disabled="@_isLoading"
+                      Immediate="true"
+                      MaxLength="10" />
+    </MudCardContent>
+    <MudCardActions>
+        <MudButton EndIcon="@Icons.Material.Filled.Login" 
+                   Color="Color.Success" 
+                   OnClick="VerifyOtpAsync"
+                   Disabled="@_isLoading"
+                   Variant="Variant.Filled">
+            @if (_isLoading)
+            {
+                <MudProgressCircular Size="Size.Small" Indeterminate="true" Class="mr-2" />
+                <span>Verifying...</span>
+            }
+            else
+            {
+                <span>Verify & Login</span>
+            }
+        </MudButton>
+    </MudCardActions>
+</MudCard>

@@ -184,6 +184,64 @@ namespace PocketBaseSharp.Services
             return _authService.AuthenticateViaOAuth2(provider, code, codeVerifier, redirectUrl, body, query, headers, cancellationToken);
         }
 
+        /// <summary>
+        /// Requests a one-time password (OTP) to be sent to the specified email address.
+        /// </summary>
+        /// <param name="email">The email address to send the OTP to.</param>
+        /// <param name="body">Optional additional body parameters.</param>
+        /// <param name="query">Optional query parameters.</param>
+        /// <param name="headers">Optional headers.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>Result containing the OTP request response with otpId.</returns>
+        public Task<Result<OtpRequestResponse>> RequestOtpAsync(string email, IDictionary<string, object>? body = null, IDictionary<string, object?>? query = null, IDictionary<string, string>? headers = null, CancellationToken cancellationToken = default)
+        {
+            return _authService.RequestOtpAsync(email, body, query, headers, cancellationToken);
+        }
+
+        /// <summary>
+        /// Requests a one-time password (OTP) to be sent to the specified email address (synchronous).
+        /// </summary>
+        /// <param name="email">The email address to send the OTP to.</param>
+        /// <param name="body">Optional additional body parameters.</param>
+        /// <param name="query">Optional query parameters.</param>
+        /// <param name="headers">Optional headers.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>Result containing the OTP request response with otpId.</returns>
+        public Result<OtpRequestResponse> RequestOtp(string email, IDictionary<string, object>? body = null, IDictionary<string, object?>? query = null, IDictionary<string, string>? headers = null, CancellationToken cancellationToken = default)
+        {
+            return _authService.RequestOtp(email, body, query, headers, cancellationToken);
+        }
+
+        /// <summary>
+        /// Authenticates a user using a one-time password (OTP).
+        /// </summary>
+        /// <param name="otpId">The OTP ID received from RequestOtpAsync.</param>
+        /// <param name="password">The OTP code received via email.</param>
+        /// <param name="body">Optional additional body parameters.</param>
+        /// <param name="query">Optional query parameters.</param>
+        /// <param name="headers">Optional headers.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>Result containing the authenticated user information.</returns>
+        public Task<Result<UserAuthModel>> AuthWithOtpAsync(string otpId, string password, IDictionary<string, object>? body = null, IDictionary<string, object?>? query = null, IDictionary<string, string>? headers = null, CancellationToken cancellationToken = default)
+        {
+            return _authService.AuthWithOtpAsync(otpId, password, body, query, headers, cancellationToken);
+        }
+
+        /// <summary>
+        /// Authenticates a user using a one-time password (OTP) (synchronous).
+        /// </summary>
+        /// <param name="otpId">The OTP ID received from RequestOtp.</param>
+        /// <param name="password">The OTP code received via email.</param>
+        /// <param name="body">Optional additional body parameters.</param>
+        /// <param name="query">Optional query parameters.</param>
+        /// <param name="headers">Optional headers.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>Result containing the authenticated user information.</returns>
+        public Result<UserAuthModel> AuthWithOtp(string otpId, string password, IDictionary<string, object>? body = null, IDictionary<string, object?>? query = null, IDictionary<string, string>? headers = null, CancellationToken cancellationToken = default)
+        {
+            return _authService.AuthWithOtp(otpId, password, body, query, headers, cancellationToken);
+        }
+
         public Task<Result<UserAuthModel>> RefreshAsync(IDictionary<string, object>? body = null, IDictionary<string, object?>? query = null, IDictionary<string, string>? headers = null, CancellationToken cancellationToken = default)
         {
             return _authService.RefreshAsync(body, query, headers, cancellationToken);
