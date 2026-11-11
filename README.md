@@ -18,10 +18,11 @@ Community-developed, open-source C# SDK for [PocketBase](https://pocketbase.io/)
 -  Real-time subscriptions
 -  Batch operations (create/update/delete)
 -  File uploads/downloads
--  **Backup Management** (create, download, restore, delete backups) **(NEW)**
--  Blazor & .NET 10 compatible
--  Mudblazor demo Blazor WASM app with admin dashboard **(NEW)**
--  Pocketbase v0.28.4
+-  **Backup Management** (create, download, restore, delete backups)
+-  **SQL console, logs truncate & collection meta APIs** (superuser only) **(NEW)**
+-  Blazor & .NET 11 compatible
+-  Mudblazor demo Blazor WASM app with admin dashboard
+-  Pocketbase v0.42.0
 
 
 ## Acknowledgments
@@ -79,11 +80,11 @@ Create a new client which connects to your PocketBase API
 
 Authenticate as an Admin
 
-    var admin = await client.Admin.AuthWithPasswordAsync("admin@admin.com", "demo123456");
+    var admin = await client.Admin.AuthenticateWithPasswordAsync("admin@admin.com", "demo123456");
 
 Or as a User
 
-    var user = await client.User.AuthWithPasswordAsync("admin@admin.com", "demo1234");
+    var user = await client.User.AuthenticateWithPasswordAsync("admin@admin.com", "demo1234");
 
 Query some data (for example, some ToDo items)
 Note: Each CRUD action requires a data type which inherits from the base class 'BaseModel'.
@@ -108,11 +109,30 @@ Manage backups (Admin only)
     // Delete a backup
     await client.Backup.DeleteAsync("my-backup.zip");
 
+Superuser tools (Admin only, PocketBase v0.37+)
+
+    // Run a raw SQL query (⚠️ any statement is executed - use with care)
+    var sql = await client.Sql.RunAsync("SELECT id, email FROM users LIMIT 10");
+    // sql.Value.Columns, sql.Value.Rows, sql.Value.AffectedRows, sql.Value.ExecTime
+
+    // Delete all logs without changing the retention setting
+    await client.Log.TruncateAsync();
+
+    // List all configurable OAuth2 providers (with inline SVG logos)
+    var providers = await client.Collections.GetAllOAuth2ProvidersAsync();
+
+    // Preview a view collection query without creating it
+    var preview = await client.Collections.DryRunViewQueryAsync("SELECT id, title FROM todos");
+    // preview.Value.Fields, preview.Value.Sample
+
+Note: since PocketBase v0.42.0 any request with an unknown or expired `Authorization` token
+is rejected with `401`, so clear the `AuthStore` and re-authenticate when you receive one.
+
 
 ## Development
 
 ### Requirements
-- .NET 10 
+- .NET 11
 
 
 ## Contributing

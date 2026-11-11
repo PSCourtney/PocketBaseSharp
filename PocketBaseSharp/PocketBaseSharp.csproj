@@ -2,7 +2,7 @@
 
 	<PropertyGroup>
 		<PackageId>PocketBaseSharp</PackageId>
-		<PackageVersion>1.1.0</PackageVersion>
+		<PackageVersion>1.2.0</PackageVersion>
 		<RootNamespace>PocketBaseSharp</RootNamespace>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
@@ -14,7 +14,7 @@
 		<Description>Multiplatform C# SDK for PocketBase</Description>
 		<PackageTags>pocketbase;blazor;webassembly;dotnet;sdk;api;realtime;backend;database;authentication</PackageTags>
 		<Copyright>Copyright (c) 2025 PSCourtney</Copyright>
-		<PackageReleaseNotes>Version 1.1.0: Added backup management features (create, download, restore, delete backups). Compatible with PocketBase v0.35.1 and .NET 10.</PackageReleaseNotes>
+		<PackageReleaseNotes>Version 1.2.0: Targets .NET 11 and PocketBase v0.42.0. Added SQL console API (Sql.RunAsync), logs truncate (Log.TruncateAsync), and collection meta endpoints (Collections.GetAllOAuth2ProvidersAsync, Collections.DryRunViewQueryAsync). Breaking: removed legacy LogService GetRequest/GetRequests/GetRequestsStatistics methods (route removed in PocketBase v0.23). See CHANGELOG.md.</PackageReleaseNotes>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageIcon>icon.png</PackageIcon>
@@ -22,7 +22,7 @@
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
 		<PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
 		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-		<TargetFramework>net10.0</TargetFramework>
+		<TargetFramework>net11.0</TargetFramework>
 		<LangVersion>latest</LangVersion>
 	</PropertyGroup>
 

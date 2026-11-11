@@ -38,6 +38,7 @@ namespace PocketBaseSharp
         public RealTimeService RealTime { private set; get; }
         public HealthService Health { private set; get; }
         public BackupService Backup { private set; get; }
+        public SqlService Sql { private set; get; }
 
         public BatchService Batch { private set; get; }
 
@@ -61,6 +62,7 @@ namespace PocketBaseSharp
             RealTime = new RealTimeService(this);
             Health = new HealthService(this);
             Backup = new BackupService(this);
+            Sql = new SqlService(this);
             Batch = new BatchService(this);
         }
 
